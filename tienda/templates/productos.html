@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<main class="container">
+  <h1 class="text-center">Productos</h1>
+  <p>
+    Valor dolar: ${{ dolar }} 
+  </p>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for producto2 in productos2 %}
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{ MEDIA_URL }}/static/media/productos/{{ producto2.imagen }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{producto2.nombre}}</h5>
+          <p class="card-text">{{producto2.descripcion}}</p>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <p>Categoría: {{producto2.categoria}}</p>
+            </li>
+            <li class="list-group-item">
+              <p>Precio: ${{producto2.precio|intcomma}}</p>
+              <p>Precio Dolares: ${{producto2.precio_dolar}}</p>
+            </li>
+          </ul>
+        </div>
+        <div class="card-text">
+          <form action="{% url 'agregar_al_carrito' producto2.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+          </form>
+        </div>
+        <div class="card-footer text-center">
+          <small class="text-muted">Unidades en Stock: {{producto2.stock|intcomma}}</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</main>
+
+{% endblock %}
